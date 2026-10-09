@@ -120,6 +120,7 @@ The following was checked by hand in October 2026. The tests repeat the comparis
 ## Other files
 
 - `groupassignment4/practice/p.ipynb`: a scratch notebook. It reads `test1.txt` into an adjacency matrix, builds the transition matrix with teleportation for the seven-page graph and holds the helper functions under their earlier camelCase names. Its cells were run out of order and one of them ends in a shape error. Nothing else uses it.
+- `.gitattributes`: marks the notebook as documentation for Linguist, the library that computes GitHub's language statistics. Without that line GitHub labels the repository as Jupyter Notebook, because the notebook is larger than the Python code.
 - `groupassignment4/out.txt`: the saved 100-iteration output described above.
 - `pyproject.toml`: Poetry metadata and the pytest settings. `groupassignment4/__init__.py` is empty and marks the folder as the package that the metadata names.
 - `poetry.lock`: the package versions that `poetry install` installs, as resolved by Poetry 2.5.1 in October 2026. They are NumPy 2.2.6, pytest 9.1.1 and the packages that pytest depends on.

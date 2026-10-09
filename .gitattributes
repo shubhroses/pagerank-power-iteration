@@ -1,0 +1,4 @@
+# The practice notebook is larger than the Python code, so GitHub labelled the
+# repository as Jupyter Notebook. Linguist, which computes GitHub's language
+# statistics, leaves out files that are marked as documentation.
+groupassignment4/practice/p.ipynb linguist-documentation
