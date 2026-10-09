@@ -61,7 +61,7 @@ Page id: 5, Page rank: 0.0351
 Page id: 1, Page rank: 0.0351
 ```
 
-Pages 5 and 1 have the same rank. Ties are printed with the higher page id first.
+Pages 5 and 1 have the same rank, and the script prints the same value for both, digit for digit. Pages with identical values are printed with the higher page id first. Pages of equal rank do not always get identical values, as the Tests section explains.
 
 Fourteen iterations is short of convergence for this graph. With the count raised to 100 the values move by up to 0.0007 (page 6 becomes 0.3066 and page 2 becomes 0.1120), so the numbers above are settled to two decimal places, not four.
 
