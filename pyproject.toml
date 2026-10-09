@@ -9,6 +9,19 @@ readme = "README.md"
 python = "^3.10"
 numpy = ">=1.23"
 
+[tool.poetry.group.dev.dependencies]
+pytest = ">=8.0"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# The tests import pagerank.py the way the README does: as a top-level module
+# from its own folder.
+pythonpath = ["groupassignment4/pagerank"]
+# pagerank.py builds a numpy.matrix, and NumPy warns that the class is not
+# recommended. The README lists this under Limitations.
+filterwarnings = [
+    "ignore:the matrix subclass is not the recommended way:PendingDeprecationWarning",
+]
 
 [build-system]
 requires = ["poetry-core"]
