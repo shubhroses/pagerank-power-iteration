@@ -99,6 +99,8 @@ pytest
 
 With Poetry, `poetry install` followed by `poetry run pytest` does the same.
 
+On GitHub, `.github/workflows/ci.yml` runs the tests for every push and pull request. It uses Python 3.12 on Ubuntu and the same two commands, `pip install numpy pytest` and `pytest`. The workflow has read-only access to the repository, and the two actions it uses are pinned to full commit hashes.
+
 The pytest settings are in `pyproject.toml`, which also declares pytest 8.0 or later as a development dependency. The settings put `groupassignment4/pagerank` on the import path, and they silence the warning that NumPy gives when `pagerank.py` builds a `numpy.matrix` (see Limitations).
 
 The tests pass on macOS (arm64) with pytest 8.0.0 and with pytest 9.1.1, under the four combinations of Python and NumPy listed in the next section.
