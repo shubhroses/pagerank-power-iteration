@@ -61,7 +61,7 @@ Page id: 5, Page rank: 0.0351
 Page id: 1, Page rank: 0.0351
 ```
 
-Pages 5 and 1 have the same rank, and the script prints the same value for both, digit for digit. Pages with identical values are printed with the higher page id first. Pages of equal rank do not always get identical values, as the Tests section explains.
+Pages 5 and 1 have the same rank. On macOS (arm64) the script prints the same value for both, digit for digit, and pages with identical values are printed with the higher page id first. Pages of equal rank do not always get identical values, so on another platform these two lines may be swapped. The Tests section explains why.
 
 Fourteen iterations is short of convergence for this graph. With the count raised to 100 the values move by up to 0.0007 (page 6 becomes 0.3066 and page 2 becomes 0.1120), so the numbers above are settled to two decimal places, not four.
 
@@ -86,7 +86,7 @@ pagerank().pagerank("test1.txt", alpha=0.15)
 | `test_chain_with_dead_end` | Page 0 links to page 1, page 1 links to page 2, and page 2 has no out-links. The transition matrix matches the one worked out by hand, the order is 2, 1, 0, and each rank is within 0.00001 of the fixed point, which is proportional to `(1, 1 + b, 1 + b + b^2)` with `b = 1 - alpha`. |
 | `test_script_output` | `python pagerank.py`, started in its folder, prints the header line, 14 vectors and the ranking listed above. |
 
-Pages with equal rank are accepted in either order, because the values computed for them can differ in the last digit. On macOS (arm64), the cycle of two pages gives 0.49999999999999944 for page 1 and 0.4999999999999994 for page 0, and that digit decides which page is printed first.
+Pages with equal rank are accepted in either order, because the values computed for them can differ in the last digit. On macOS (arm64), the cycle of two pages gives 0.49999999999999944 for page 1 and 0.4999999999999994 for page 0, and that digit decides which page is printed first. The last digit depends on the order in which the matrix product adds its terms, and that order is up to the linear algebra library that NumPy uses.
 
 To run the tests, from the repository root:
 
