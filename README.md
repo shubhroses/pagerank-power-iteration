@@ -2,7 +2,7 @@
 
 PageRank with teleportation, computed by power iteration on a dense transition matrix with NumPy. The implementation is one Python file of about 90 lines, and three small sample graphs come with it.
 
-It was written in December 2022 as a group assignment for a course. The repository was called `5180GroupAssignement4` until October 2026, and the code folder is still named `groupassignment4`. `pagerank.py` and the sample files are unchanged since 2022. This README was written in October 2026, when `.gitignore` and the NumPy entry in `pyproject.toml` were also added.
+It was written in December 2022 as a group assignment for a course. The repository was called `5180GroupAssignement4` until October 2026, and the code folder is still named `groupassignment4`. `pagerank.py` and the sample files are unchanged since 2022. This README and the tests were written in October 2026, when `.gitignore` and the NumPy and pytest entries in `pyproject.toml` were also added.
 
 ## What the code does
 
@@ -73,9 +73,39 @@ from pagerank import pagerank
 pagerank().pagerank("test1.txt", alpha=0.15)
 ```
 
+## Tests
+
+`tests/test_pagerank.py` was added in October 2026. The assignment had no tests. `pagerank()` returns nothing, so the tests read the ranking from the lines it prints. pytest runs the six test functions as nine cases:
+
+| Test | What it checks |
+| --- | --- |
+| `test_sample_graph`, once for each sample graph | The ranks sum to 1 within 1e-9 and the pages come in the expected order. |
+| `test_sample_ranks_match_saved_output`, for `test1.txt` and `test2.txt` | Each rank is within 0.00005 of the one saved in `out.txt`. |
+| `test_textbook_example` | With alpha = 0.14, the ranks of `test3.txt` round to the two-decimal vector printed in the textbook. |
+| `test_two_node_cycle` | Two pages link to each other. The transition matrix matches the one worked out by hand, and both ranks are 1/2. |
+| `test_chain_with_dead_end` | Page 0 links to page 1, page 1 links to page 2, and page 2 has no out-links. The transition matrix matches the one worked out by hand, the order is 2, 1, 0, and each rank is within 0.00001 of the fixed point, which is proportional to `(1, 1 + b, 1 + b + b^2)` with `b = 1 - alpha`. |
+| `test_script_output` | `python pagerank.py`, started in its folder, prints the header line, 14 vectors and the ranking listed above. |
+
+Pages with equal rank are accepted in either order, because the values computed for them can differ in the last digit. On macOS (arm64), the cycle of two pages gives 0.49999999999999944 for page 1 and 0.4999999999999994 for page 0, and that digit decides which page is printed first.
+
+To run the tests, from the repository root:
+
+```
+python3 -m venv .venv
+source .venv/bin/activate
+pip install numpy pytest
+pytest
+```
+
+With Poetry, `poetry install` followed by `poetry run pytest` does the same.
+
+The pytest settings are in `pyproject.toml`, which also declares pytest 8.0 or later as a development dependency. The settings put `groupassignment4/pagerank` on the import path, and they silence the warning that NumPy gives when `pagerank.py` builds a `numpy.matrix` (see Limitations).
+
+The tests pass on macOS (arm64) with pytest 8.0.0 and with pytest 9.1.1, under the four combinations of Python and NumPy listed in the next section.
+
 ## How the results were checked
 
-There are no automated tests. The following was checked in October 2026:
+The following was checked by hand in October 2026, before the tests were written. The tests repeat the comparisons of ranks in the first two points.
 
 - Against a published example. `test3.txt` is the seven-page web graph of the worked example in the section "The PageRank computation" of *Introduction to Information Retrieval* by Manning, Raghavan and Schütze (Cambridge University Press, 2008, chapter 21; [online edition](https://nlp.stanford.edu/IR-book/html/htmledition/the-pagerank-computation-1.html)), and 0.14 is the teleportation rate used there. The book prints the transition matrix and the PageRank vector (0.05 0.04 0.11 0.25 0.21 0.04 0.31) to two decimals. The matrix this code builds and the ranks it prints for pages 0 to 6 round to the same numbers.
 - Against the saved output. `groupassignment4/out.txt` holds the rankings of `test1.txt` and `test2.txt` printed by commit `326225a`, which ran 100 iterations with alpha = 0.15. Re-running that commit reproduces the file digit for digit. The current 14-iteration code gives the same order, with every rank within 0.00005 of the saved one.
@@ -91,7 +121,7 @@ There are no automated tests. The following was checked in October 2026:
 
 - `groupassignment4/practice/p.ipynb`: a scratch notebook. It reads `test1.txt` into an adjacency matrix, builds the transition matrix with teleportation for the seven-page graph and holds the helper functions under their earlier camelCase names. Its cells were run out of order and one of them ends in a shape error. Nothing else uses it.
 - `groupassignment4/out.txt`: the saved 100-iteration output described above.
-- `pyproject.toml`: Poetry metadata. `groupassignment4/__init__.py` is empty and marks the folder as the package that the metadata names.
+- `pyproject.toml`: Poetry metadata and the pytest settings. `groupassignment4/__init__.py` is empty and marks the folder as the package that the metadata names.
 
 ## Credits
 
