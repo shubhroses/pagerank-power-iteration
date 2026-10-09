@@ -49,7 +49,7 @@ python pagerank.py
 
 The script has to be started from that folder because it opens `test3.txt` by a relative path. With Poetry, `poetry install` followed by `poetry run python pagerank.py` in the same folder does the same.
 
-As committed, the script ranks `test3.txt` with alpha = 0.14. It prints 14 vectors and then the ranking, shown here rounded to four decimals (the script prints them at full precision):
+As committed, the script ranks `test3.txt` with alpha = 0.14. It prints the header line `For file test3.txt`, then 14 vectors, then the ranking. Each vector has seven entries and is wrapped onto two lines. The ranking is shown here rounded to four decimals (the script prints the values at full precision):
 
 ```
 Page id: 6, Page rank: 0.3059
